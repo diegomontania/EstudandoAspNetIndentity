@@ -18,13 +18,19 @@ namespace ByteBank.Forum.ViewModels
         [Display(Name = "Nome de Usuário")]
         public string UserName { get; set; }
         [Required]
-        [Display (Name = "Nome Completo")]
+        [Display(Name = "Nome Completo")]
         public string NomeCompleto { get; set; }
         [Required]
         [EmailAddress]
         public string Email { get; set; }
         [Required]
-        [DataType (DataType.Password)]
+        [DataType(DataType.Password)]
+        [StringLength(10, MinimumLength = 6)]
         public string Senha { get; set; }
+
+        public ContaRegistrarViewModel()
+        {
+                
+        }
     }
 }
