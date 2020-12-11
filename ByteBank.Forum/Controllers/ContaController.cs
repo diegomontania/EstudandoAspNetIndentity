@@ -1,10 +1,8 @@
 ﻿using ByteBank.Forum.Models;
 using ByteBank.Forum.ViewModels;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity.EntityFramework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -13,6 +11,27 @@ namespace ByteBank.Forum.Controllers
 {
     public class ContaController : Controller
     {
+        //responsavel por conter os valores retornados pelo contexto do owin
+        private UserManager<UsuarioAplicacao> _userManager { get; set; }
+        public UserManager<UsuarioAplicacao> UserManager 
+        {
+            get 
+            {
+                //se não houver valor, recupere do contexto do owin
+                if (_userManager == null)
+                {
+                    var contextoOwin = HttpContext.GetOwinContext();
+                    _userManager = contextoOwin.GetUserManager<UserManager<UsuarioAplicacao>>();
+                }
+
+                return _userManager;
+            }
+            set 
+            {
+                _userManager = value;
+            }
+        }
+
         public ActionResult Registrar()
         {
             return View();
@@ -25,15 +44,6 @@ namespace ByteBank.Forum.Controllers
             //detecta se o estado do modelo é valido ou não
             if(ModelState.IsValid)
             {
-                //https://pt.stackoverflow.com/questions/163115/qual-a-diferen%C3%A7a-entre-criar-um-context-com-dbcontext-e-datacontext
-                //utilizando dbContext passando a string connection
-                var dbContext = new IdentityDbContext<UsuarioAplicacao>("DefaultConnection");
-
-                //camada de abstração, fornece as informações do usuário para o identity
-                var userStore = new UserStore<UsuarioAplicacao>(dbContext);
-
-                //responsável por gerenciar os usuários
-                var userManager = new UserManager<UsuarioAplicacao>(userStore);
 
                 //criando de fato o usuario
                 var novoUsuario = new UsuarioAplicacao();
@@ -43,8 +53,8 @@ namespace ByteBank.Forum.Controllers
                 novoUsuario.UserName = modelo.UserName;
                 novoUsuario.NomeCompleto = modelo.NomeCompleto; //campo vindo da classe UsuarioAplicacao
 
-                //adicionado usuario utilizando userManager
-                await userManager.CreateAsync(novoUsuario, modelo.Senha);
+                //adicionado usuario utilizando a propriedade UserManager
+                await UserManager.CreateAsync(novoUsuario, modelo.Senha);
 
                 //Apos incluir, redireciona para home
                 return RedirectToAction("Index", "Home");

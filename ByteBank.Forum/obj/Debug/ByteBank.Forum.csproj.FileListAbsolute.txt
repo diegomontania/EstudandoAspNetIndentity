@@ -85,3 +85,16 @@ C:\Users\Diego\source\repos\ByteBank.Forum\ByteBank.Forum\bin\EntityFramework.xm
 C:\Users\Diego\source\repos\ByteBank.Forum\ByteBank.Forum\bin\EntityFramework.SqlServer.xml
 C:\Users\Diego\source\repos\ByteBank.Forum\ByteBank.Forum\bin\Microsoft.AspNet.Identity.Core.xml
 C:\Users\Diego\source\repos\ByteBank.Forum\ByteBank.Forum\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+C:\Users\Diego\source\repos\ByteBank.Forum\ByteBank.Forum\bin\Microsoft.AspNet.Identity.Owin.dll
+C:\Users\Diego\source\repos\ByteBank.Forum\ByteBank.Forum\bin\Microsoft.Owin.dll
+C:\Users\Diego\source\repos\ByteBank.Forum\ByteBank.Forum\bin\Microsoft.Owin.Host.SystemWeb.dll
+C:\Users\Diego\source\repos\ByteBank.Forum\ByteBank.Forum\bin\Microsoft.Owin.Security.Cookies.dll
+C:\Users\Diego\source\repos\ByteBank.Forum\ByteBank.Forum\bin\Microsoft.Owin.Security.dll
+C:\Users\Diego\source\repos\ByteBank.Forum\ByteBank.Forum\bin\Microsoft.Owin.Security.OAuth.dll
+C:\Users\Diego\source\repos\ByteBank.Forum\ByteBank.Forum\bin\Owin.dll
+C:\Users\Diego\source\repos\ByteBank.Forum\ByteBank.Forum\bin\Microsoft.AspNet.Identity.Owin.xml
+C:\Users\Diego\source\repos\ByteBank.Forum\ByteBank.Forum\bin\Microsoft.Owin.xml
+C:\Users\Diego\source\repos\ByteBank.Forum\ByteBank.Forum\bin\Microsoft.Owin.Host.SystemWeb.xml
+C:\Users\Diego\source\repos\ByteBank.Forum\ByteBank.Forum\bin\Microsoft.Owin.Security.xml
+C:\Users\Diego\source\repos\ByteBank.Forum\ByteBank.Forum\bin\Microsoft.Owin.Security.Cookies.xml
+C:\Users\Diego\source\repos\ByteBank.Forum\ByteBank.Forum\bin\Microsoft.Owin.Security.OAuth.xml

@@ -27,10 +27,5 @@ namespace ByteBank.Forum.ViewModels
         [DataType(DataType.Password)]
         [StringLength(10, MinimumLength = 6)]
         public string Senha { get; set; }
-
-        public ContaRegistrarViewModel()
-        {
-                
-        }
     }
 }
