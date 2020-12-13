@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System;
 
 namespace ByteBank.Forum.Controllers
 {
@@ -42,9 +43,8 @@ namespace ByteBank.Forum.Controllers
         public async Task<ActionResult> Registrar(ContaRegistrarViewModel modelo)
         {
             //detecta se o estado do modelo é valido ou não
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-
                 //criando de fato o usuario
                 var novoUsuario = new UsuarioAplicacao();
 
@@ -53,15 +53,41 @@ namespace ByteBank.Forum.Controllers
                 novoUsuario.UserName = modelo.UserName;
                 novoUsuario.NomeCompleto = modelo.NomeCompleto; //campo vindo da classe UsuarioAplicacao
 
-                //adicionado usuario utilizando a propriedade UserManager
-                await UserManager.CreateAsync(novoUsuario, modelo.Senha);
+                ////verifica se existe um usuário cadastrado com o email fornecido
+                //var usuario = UserManager.FindByEmail(modelo.Email);
+                //var usuarioJaExiste = usuario != null;
 
-                //Apos incluir, redireciona para home
-                return RedirectToAction("Index", "Home");
+                //if (usuarioJaExiste)
+                //{
+                //    return RedirectToAction("Index", "Home"); //redireciona para home
+                //}
+                //else
+                //{
+                    //adicionado usuario utilizando a propriedade UserManager
+                    var resultado = await UserManager.CreateAsync(novoUsuario, modelo.Senha);
+
+                    //verifica o resultado da ação
+                    if (resultado.Succeeded)
+                        return RedirectToAction("Index", "Home"); //Apos incluir, redireciona para home
+                    else
+                        AdicionaErros(resultado);
+                //}
+                    
             }
 
             //algo deu errado
             return View(modelo);
+        }
+
+        private void AdicionaErros(IdentityResult resultado)
+        {
+            foreach (var erro in resultado.Errors)
+                ModelState.AddModelError("", erro);
+        }
+
+        private void VerificaSeUsuarioExiste()
+        {
+
         }
     }
 }
