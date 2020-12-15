@@ -44,7 +44,6 @@ namespace ByteBank.Forum.App_Start.Identity
                     smtpClient.Host = "smtp.gmail.com";
                     smtpClient.Port = 587;
                     smtpClient.EnableSsl = true;
-
                     smtpClient.Timeout = 20_000;
 
                     //envia o email

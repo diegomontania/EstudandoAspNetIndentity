@@ -61,6 +61,14 @@ namespace ByteBank.Forum
                     //fazendo uso do novo serviço de email, para utilização da confirmação de email
                     userManager.EmailService = new EmailServico();
 
+                    //registrando token
+                    var dataProtectionProvider = opcoes.DataProtectionProvider;
+                    var dataProtectionProviderCreated = dataProtectionProvider.Create("ByteBank.Forum");
+
+                    //atribuindo valor
+                    userManager.UserTokenProvider = 
+                        new DataProtectorTokenProvider<UsuarioAplicacao>(dataProtectionProviderCreated);
+
                     return userManager;
                 });
         }
