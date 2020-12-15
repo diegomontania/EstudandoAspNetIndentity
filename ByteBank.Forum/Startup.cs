@@ -58,6 +58,9 @@ namespace ByteBank.Forum
                         ObrigatorioLetraMinuscula = true
                     };
 
+                    //fazendo uso do novo serviço de email, para utilização da confirmação de email
+                    userManager.EmailService = new EmailServico();
+
                     return userManager;
                 });
         }

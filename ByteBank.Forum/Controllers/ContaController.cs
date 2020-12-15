@@ -57,24 +57,44 @@ namespace ByteBank.Forum.Controllers
 
                 //verifica o resultado da ação
                 if (resultado.Succeeded)
-                    return RedirectToAction("Index", "Home"); //Apos incluir, redireciona para home
+                {
+                    await EnviarEmailDeConfirmacaoAsync(novoUsuario);
+                    return View("AguardandoConfirmacao"); //Apos incluir, redireciona para home
+                }
                 else
+                {
                     AdicionaErros(resultado);
+                }
             }
 
             //algo deu errado
             return View(modelo);
         }
 
+        private async Task EnviarEmailDeConfirmacaoAsync(UsuarioAplicacao usuario)
+        {
+            //armazena token do usuario
+            var token = await UserManager.GenerateEmailConfirmationTokenAsync(usuario.Id);
+
+            //cria link de confirmação do usuário
+            var linkDeCallBack = Url.Action("ConfirmacaoEmail", "Conta", new { usuarioId = usuario.Id, token = token }, Request.Url.Scheme);
+
+            await UserManager.SendEmailAsync(
+                usuario.Id,
+                "Fórum - Confirmação de email",
+                $"Bem vindo ao fórum Bytebank, clique aqui para confirmar seu endereço de email! {linkDeCallBack}");
+        }
+
+        //criando Action de confirmação do email
+        public ActionResult ConfirmacaoEmail(string usuarioId, string token)
+        {
+            throw new NotImplementedException();
+        }
+
         private void AdicionaErros(IdentityResult resultado)
         {
             foreach (var erro in resultado.Errors)
                 ModelState.AddModelError("", erro);
-        }
-
-        private void VerificaSeUsuarioExiste()
-        {
-
         }
     }
 }

@@ -17,12 +17,15 @@ namespace ByteBank.Forum.ViewModels
         [Required]
         [Display(Name = "Nome de Usuário")]
         public string UserName { get; set; }
+
         [Required]
         [Display(Name = "Nome Completo")]
         public string NomeCompleto { get; set; }
+
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+
         [Required]
         [DataType(DataType.Password)]
         public string Senha { get; set; }
