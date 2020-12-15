@@ -25,7 +25,6 @@ namespace ByteBank.Forum.ViewModels
         public string Email { get; set; }
         [Required]
         [DataType(DataType.Password)]
-        [StringLength(10, MinimumLength = 6)]
         public string Senha { get; set; }
     }
 }

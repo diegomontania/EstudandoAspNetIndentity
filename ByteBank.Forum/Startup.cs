@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using ByteBank.Forum.App_Start.Identity;
 
 //Utilizando owin, para apenas utilizar os recursos necessários na aplicação. Sendo mais leve que o System.web
 //adicionando atributo que define o tipo a classe de inicialização do 'Owin'
@@ -46,6 +47,16 @@ namespace ByteBank.Forum
 
                     //atribui a propriedade
                     userManager.UserValidator = userValidator;
+
+                    //validacao de senha
+                    userManager.PasswordValidator = new SenhaValidador() /*utilizando 'Property Initializer' para colocar os valores*/
+                    {
+                        TamanhoRequerido = 6,
+                        ObrigatorioCaracteresEspeciais = true,
+                        ObrigatorioDigitos = true,
+                        ObrigatorioLetraMaiuscula = true,
+                        ObrigatorioLetraMinuscula = true
+                    };
 
                     return userManager;
                 });
