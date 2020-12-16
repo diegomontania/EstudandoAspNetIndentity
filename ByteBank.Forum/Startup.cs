@@ -10,6 +10,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using ByteBank.Forum.App_Start.Identity;
+using Microsoft.Owin.Security.Cookies;
 
 //Utilizando owin, para apenas utilizar os recursos necessários na aplicação. Sendo mais leve que o System.web
 //adicionando atributo que define o tipo a classe de inicialização do 'Owin'
@@ -82,6 +83,12 @@ namespace ByteBank.Forum
 
                     return signInManager;
                 });
+
+            //criando cookies e utilizando no owin
+            builder.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie
+            });
         }
     }
 }

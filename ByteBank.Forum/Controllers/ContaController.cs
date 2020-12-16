@@ -155,7 +155,7 @@ namespace ByteBank.Forum.Controllers
                     await SignInManager.PasswordSignInAsync(
                         usuario.UserName, /*nome do usuario*/
                         modelo.Senha,     /*senha vinda do formulario*/
-                        isPersistent: false, 
+                        isPersistent: modelo.ContinuarLogado, /*habilita o 'continuar logado'*/
                         shouldLockout: false);
                 
                 //se tiver sucesso no login
