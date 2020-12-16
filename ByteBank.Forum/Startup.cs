@@ -34,7 +34,7 @@ namespace ByteBank.Forum
                     return new UserStore<UsuarioAplicacao>(dbContext);
                 });
 
-            //criando UserManager - responsável por gerenciar os usuários
+            //criando UserManager - responsável por gerenciar os usuários (adição, exclusão, modificação)
             builder.CreatePerOwinContext<UserManager<UsuarioAplicacao>>(
                 (opcoes, contextoOwin) =>
                 {
@@ -70,6 +70,17 @@ namespace ByteBank.Forum
                         new DataProtectorTokenProvider<UsuarioAplicacao>(dataProtectionProviderCreated);
 
                     return userManager;
+                });
+
+            //criando SignInManager - responsável por gerenciar o login e logout de usuários
+            //requer a chave de identificação, nesse caso uma string
+            builder.CreatePerOwinContext<SignInManager<UsuarioAplicacao, string>>(
+                (opcoes, contextoOwin) =>
+                {
+                    var userManager = contextoOwin.Get<UserManager<UsuarioAplicacao>>();
+                    var signInManager = new SignInManager<UsuarioAplicacao, string>(userManager, contextoOwin.Authentication);
+
+                    return signInManager;
                 });
         }
     }

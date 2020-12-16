@@ -33,11 +33,34 @@ namespace ByteBank.Forum.Controllers
             }
         }
 
+        //responsavel por conter os valores do signInManager
+        private SignInManager<UsuarioAplicacao, string> _signInManager { get; set; }
+        public SignInManager<UsuarioAplicacao, string> SignInManager
+        {
+            get
+            {
+                //se não houver valor, recupere do contexto do owin
+                if (_signInManager == null)
+                {
+                    var contextoOwin = HttpContext.GetOwinContext();
+                    _signInManager = contextoOwin.GetUserManager<SignInManager<UsuarioAplicacao, string>>();
+                }
+
+                return _signInManager;
+            }
+            set
+            {
+                _signInManager = value;
+            }
+        }
+
+        //Action Registrar usuarios
         public ActionResult Registrar()
         {
             return View();
         }
 
+        //Action de registro de usuário
         //https://imasters.com.br/back-end/c-programacao-assincrona-async-e-await
         [HttpPost]
         public async Task<ActionResult> Registrar(ContaRegistrarViewModel modelo)
@@ -71,6 +94,7 @@ namespace ByteBank.Forum.Controllers
             return View(modelo);
         }
 
+        //Action de que envia email de confirmação
         private async Task EnviarEmailDeConfirmacaoAsync(UsuarioAplicacao usuario)
         {
             //armazena token do usuario
@@ -85,8 +109,8 @@ namespace ByteBank.Forum.Controllers
                 $"Bem vindo ao fórum Bytebank, clique aqui para confirmar seu endereço de email! {linkDeCallBack}");
         }
 
-        //criando Action de confirmação do email
-        public async Task<ActionResult> ConfirmacaoEmailAsync(string usuarioId, string token)
+        //Action de confirmação do email
+        public async Task<ActionResult> ConfirmacaoEmail(string usuarioId, string token)
         {
             //caso algum parametro seja nulo, retorne para view de erro
             if (usuarioId == null || token == null)
@@ -97,9 +121,61 @@ namespace ByteBank.Forum.Controllers
 
             //redireciona para uma página após confirmação bem sucedida
             if (resultado.Succeeded)
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("SucessoConfirmacao", "Conta");
             else
                 return View("Error");
+        }
+
+        //Action de login
+        public async Task<ActionResult> Login()
+        {
+            return View();
+        }
+
+        //Redireciona para Sucesso após confirmação de email
+        public async Task<ActionResult> SucessoConfirmacao()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Login(ContaLoginViewModel modelo)
+        {
+            if (ModelState.IsValid)
+            {
+                //recebe o usuario pelo email
+                var usuario = await UserManager.FindByEmailAsync(modelo.Email);
+
+                //se usuário não existir
+                if (usuario == null)
+                    SenhaOuUsuariosInvalidos();
+
+                //gerenciador responsável pelas operações de logar e deslogar usuários                             
+                var signInResultado = 
+                    await SignInManager.PasswordSignInAsync(
+                        usuario.UserName, /*nome do usuario*/
+                        modelo.Senha,     /*senha vinda do formulario*/
+                        isPersistent: false, 
+                        shouldLockout: false);
+                
+                //se tiver sucesso no login
+                switch (signInResultado)
+                {
+                    case SignInStatus.Success:
+                        return RedirectToAction("Index", "Home");
+                    default:
+                        return SenhaOuUsuariosInvalidos();
+                }
+            }
+
+            //algo errado aconteceu
+            return View(modelo);
+        }
+
+        private ActionResult SenhaOuUsuariosInvalidos()
+        {
+            ModelState.AddModelError("", "Credenciais inválidas!");
+            return View("Login");
         }
 
         private void AdicionaErros(IdentityResult resultado)

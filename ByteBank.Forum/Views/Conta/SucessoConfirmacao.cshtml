@@ -1,0 +1,24 @@
+﻿@model ByteBank.Forum.ViewModels.ContaRegistrarViewModel
+
+@{
+    ViewBag.Title = "Registrar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Registrar</h2>
+
+@using (Html.BeginForm())
+{
+    <h4>Confirmação recebida!</h4>
+    <hr />
+
+    //mostra resultado de validação
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+
+    //cria o form
+    <p>
+        Obrigado por confirmar o seu email! Clique no botão abaixo e faça seu login.
+    </p>
+
+    @Html.ActionLink("Login", "Login", "Conta", new { @class = "btn btn-success" })
+}
