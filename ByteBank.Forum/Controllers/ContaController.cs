@@ -14,9 +14,9 @@ namespace ByteBank.Forum.Controllers
     {
         //responsavel por conter os valores retornados pelo contexto do owin
         private UserManager<UsuarioAplicacao> _userManager { get; set; }
-        public UserManager<UsuarioAplicacao> UserManager 
+        public UserManager<UsuarioAplicacao> UserManager
         {
-            get 
+            get
             {
                 //se não houver valor, recupere do contexto do owin
                 if (_userManager == null)
@@ -27,7 +27,7 @@ namespace ByteBank.Forum.Controllers
 
                 return _userManager;
             }
-            set 
+            set
             {
                 _userManager = value;
             }
@@ -86,9 +86,20 @@ namespace ByteBank.Forum.Controllers
         }
 
         //criando Action de confirmação do email
-        public ActionResult ConfirmacaoEmail(string usuarioId, string token)
+        public async Task<ActionResult> ConfirmacaoEmailAsync(string usuarioId, string token)
         {
-            throw new NotImplementedException();
+            //caso algum parametro seja nulo, retorne para view de erro
+            if (usuarioId == null || token == null)
+                return View("Error");
+
+            //Confirma o email
+            var resultado = await UserManager.ConfirmEmailAsync(usuarioId, token);
+
+            //redireciona para uma página após confirmação bem sucedida
+            if (resultado.Succeeded)
+                return RedirectToAction("Index", "Home");
+            else
+                return View("Error");
         }
 
         private void AdicionaErros(IdentityResult resultado)
