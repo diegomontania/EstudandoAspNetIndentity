@@ -177,13 +177,34 @@ namespace ByteBank.Forum.Controllers
                         usuario.UserName, /*nome do usuario*/
                         modelo.Senha,     /*senha vinda do formulario*/
                         isPersistent: modelo.ContinuarLogado, /*habilita o 'continuar logado'*/
-                        shouldLockout: false);
-                
-                //se tiver sucesso no login
+                        shouldLockout: true);  /*habilita o 'lockout' se o usuario fizer muitas tentativas de login*/
+
+                //resultado da tentativa de login
                 switch (signInResultado)
                 {
+                    //se tiver sucesso no login
                     case SignInStatus.Success:
-                        return RedirectToAction("Index", "Home");
+
+                        if (usuario.EmailConfirmed)
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else
+                        {
+                            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);               /*desloga o usuario*/
+                            ModelState.AddModelError("", "Por favor, confirme o seu email antes do primeiro acesso!"); /*escreve na tela*/
+                        }
+                        break;
+
+                    //se usuario acertou a senha após varias tentativas erradas
+                    case SignInStatus.LockedOut:
+                        var senhaCorreta = await UserManager.CheckPasswordAsync(usuario, modelo.Senha);
+                        if (senhaCorreta)
+                            ModelState.AddModelError("", "Sua conta está bloqueada temporariamente! Tente novamente daqui a 15 minutos!"); /*escreve na tela*/
+                        else
+                            return SenhaOuUsuariosInvalidos();
+                        break;
+
                     default:
                         return SenhaOuUsuariosInvalidos();
                 }

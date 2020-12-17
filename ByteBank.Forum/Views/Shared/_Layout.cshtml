@@ -40,10 +40,10 @@
                         //Cria um formulario para fazer o 'post' da action
                         using (Html.BeginForm("Logoff", "Conta", FormMethod.Post, new { id = "formulario-logoff" }))
                         { 
-                    
+                        
                         }
 
-                        //exibe informação do usuario
+                        //exibe informação do usuario e mostra link de logout
                         <li><p class="navbar-text"> Olá, @User.Identity.GetUserName() ! </p></li>
                         <li> <a href="javascript:document.getElementById('formulario-logoff').submit()"> Logoff </a></li>
                     }

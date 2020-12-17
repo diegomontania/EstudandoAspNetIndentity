@@ -70,6 +70,11 @@ namespace ByteBank.Forum
                     userManager.UserTokenProvider = 
                         new DataProtectorTokenProvider<UsuarioAplicacao>(dataProtectionProviderCreated);
 
+                    //configurando userManager para evitar 'ataque de força bruta' por varias tentativas de login
+                    userManager.MaxFailedAccessAttemptsBeforeLockout = 3;                 /*utilizando máximo de tentativas*/
+                    userManager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(15); /*tempo de espera após o máximo ser atingido*/
+                    userManager.UserLockoutEnabledByDefault = true;                       /*habilitando o recurso para todos os usuarios*/
+
                     return userManager;
                 });
 
