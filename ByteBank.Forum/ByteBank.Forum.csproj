@@ -155,7 +155,9 @@
     <Compile Include="App_Start\Identity\EmailServico.cs" />
     <Compile Include="App_Start\Identity\SenhaValidador.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="ViewModels\ContaConfirmacaoAlteracaoSenhaViewModel.cs" />
     <Compile Include="Controllers\ContaController.cs" />
+    <Compile Include="ViewModels\ContaEsqueciSenhaViewModel.cs" />
     <Compile Include="ViewModels\ContaLoginViewModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TopicoController.cs" />
@@ -208,6 +210,9 @@
     <Content Include="Views\Topico\Criar.cshtml" />
     <Content Include="Views\Conta\Login.cshtml" />
     <Content Include="Views\Conta\SucessoConfirmacao.cshtml" />
+    <Content Include="Views\Conta\EsqueciSenha.cshtml" />
+    <Content Include="Views\Conta\ConfirmacaoAlteracaoDeSenha.cshtml" />
+    <Content Include="Views\Conta\EmailAlteracaoSenhaEnviado.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Anotacoes\" />

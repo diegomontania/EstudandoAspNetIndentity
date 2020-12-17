@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Email enviado";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Email enviado com sucesso</h2>
+
+@using (Html.BeginForm())
+{
+    <hr />
+
+    //mostra resultado de validação
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+
+    <p>
+        Email enviado com sucesso, por favor verifique sua caixa de entrada!
+    </p>
+
+
+}
