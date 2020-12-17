@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@*diretiva para poder recuperar informações do usuario*@
+@using Microsoft.AspNet.Identity
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -21,13 +24,35 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Criar novo tópico", "Criar", "Topico")</li>
+
+                    @if (Request.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Criar novo tópico", "Criar", "Topico")</li>
+                    }
                 </ul>
 
-                @*registrar*@
+                @*Opções de login e registrar*@
                 <ul class="nav navbar-nav navbar-right">
-                    <li>@Html.ActionLink("Registrar", "Registrar", "Conta")</li>
-                    <li>@Html.ActionLink("Login", "Login", "Conta")</li>
+
+                    @*verifica se o usuario está logado ou não. se estiver, não exibe mais os botões*@
+                    @if (Request.IsAuthenticated)
+                    {
+                        //Cria um formulario para fazer o 'post' da action
+                        using (Html.BeginForm("Logoff", "Conta", FormMethod.Post, new { id = "formulario-logoff" }))
+                        { 
+                    
+                        }
+
+                        //exibe informação do usuario
+                        <li><p class="navbar-text"> Olá, @User.Identity.GetUserName() ! </p></li>
+                        <li> <a href="javascript:document.getElementById('formulario-logoff').submit()"> Logoff </a></li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Registrar", "Registrar", "Conta")</li>
+                        <li>@Html.ActionLink("Login", "Login", "Conta")</li>
+                    }
+
                 </ul>
             </div>
         </div>

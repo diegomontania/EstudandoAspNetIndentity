@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System;
+using Microsoft.Owin.Security;
 
 namespace ByteBank.Forum.Controllers
 {
@@ -51,6 +52,17 @@ namespace ByteBank.Forum.Controllers
             set
             {
                 _signInManager = value;
+            }
+        }
+
+        //responsavel pelo logoff do usuario
+        public IAuthenticationManager AuthenticationManager
+        {
+            get
+            {
+                //recuperando 'AuthenticationManager' que vem por padrão no owin com identity
+                var contextoOwin = Request.GetOwinContext();
+                return contextoOwin.Authentication;
             }
         }
 
@@ -130,6 +142,15 @@ namespace ByteBank.Forum.Controllers
         public async Task<ActionResult> Login()
         {
             return View();
+        }
+
+        //Action de Logoff
+        [HttpPost] /*utilizando http post pois, o http get não altera estado*/
+        public ActionResult Logoff()
+        {
+            //Passando o tipo de autenticação utilizada no 'Startup.cs'
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            return RedirectToAction("Index", "Home");
         }
 
         //Redireciona para Sucesso após confirmação de email
